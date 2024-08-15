@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
-    {
+{
     public float speed;
     public float groundDist;
 
     public LayerMask terrainLayer;
     public Rigidbody rb;
-    public SpriteRenderer sr;
     
-    
+    [SerializeField] private Animator anim;
+
+
 
     void Start()
     {
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
         castPos.y += 1;
         if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
         {
-            if (hit.collider != null) 
+            if (hit.collider != null)
             {
                 Vector3 movePos = transform.position;
                 movePos.y = hit.point.y + groundDist;
@@ -38,16 +39,22 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector3 moveDir = new Vector3(x, 0, y);
+        if (moveDir.magnitude > 0.5)
+        {
+            moveDir.Normalize();
+        }
         rb.velocity = moveDir * speed;
 
-        if (x != 0 && x < 0)
-        {
-            sr.flipX = true;
-            
-        }
-        else if (x != 0 && x > 0)
-        { 
-            sr.flipX=false; 
-        }
+        moveAnim();
+
+        
     }
+
+    void moveAnim() 
+    {
+        anim.SetFloat("HorizontalAnim", rb.velocity.x);
+        anim.SetFloat("VerticalAnim", rb.velocity.z);
+
+    }
+  
 }
