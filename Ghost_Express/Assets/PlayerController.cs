@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         RaycastHit hit;
         Vector3 castPos = transform.position;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector3 moveDir = new Vector3(x, 0, y);
-        if (moveDir.magnitude > 0.5)
+        if (moveDir.magnitude > 0)
         {
             moveDir.Normalize();
         }
